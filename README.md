@@ -67,11 +67,18 @@ Mic input
 
 6. Open `http://localhost:3000`.
 
-You can also run web + ollama API together with:
+### Start all services (separate terminal windows)
 
-```bash
-npm run dev
-```
+| Platform | Command |
+|----------|---------|
+| **macOS Terminal** | `npm run start:all:mac` |
+| **Windows Terminal** | `npm run start:all:win` |
+| **Windows CMD** | `npm run start:all:win:cmd` |
+
+Each opens 4 windows/tabs: Ollama daemon, Ollama API, speech service, web UI.  
+On Windows you can also double-click `scripts/start-all-terminals.cmd` (same as CMD).
+
+You can also run web + ollama API in one terminal with `npm run dev` (still start Ollama daemon and speech separately, or use a start script above).
 
 ## Environment Files
 
@@ -93,13 +100,22 @@ Edit these markdown files to update what the assistant can answer for each suppo
 
 ## Testing
 
-Run end-to-end tests:
+Run Playwright end-to-end tests:
 
 ```bash
 npm run test:e2e
 ```
 
 Playwright starts `services/web` on port `3099` and mocks calls to ollama and speech APIs.
+
+Optional stop-reply checks (require running web on `:3000` and ollama API on `:4000` for the Node script):
+
+```bash
+npm run test:stop-reply
+npm run test:stop-reply:browser
+```
+
+Scripts live in `e2e/test-stop-reply.mjs` and `e2e/test-stop-reply-browser.mjs`.
 
 ## Repository Structure
 

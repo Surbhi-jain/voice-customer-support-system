@@ -1,10 +1,12 @@
 /**
  * Browser smoke test: Stop reply button visibility rules.
- * Run: node scripts/test-stop-reply-browser.mjs [baseUrl]
+ * Run: node e2e/test-stop-reply-browser.mjs [webBaseUrl]
+ *
+ * Default: http://localhost:3000 (requires dev server + mocked or live backends)
  */
 import { chromium } from "playwright";
 
-const BASE = process.argv[2] ?? "http://localhost:3002";
+const BASE = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
 
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext();
@@ -39,7 +41,6 @@ try {
     ok("End session hidden before session starts");
   }
 
-  // Stop reply is conditionally rendered only while thinking/speaking.
   const stopReplyCount = await page.getByRole("button", { name: "Stop reply" }).count();
   if (stopReplyCount === 0) {
     ok("Stop reply not mounted before session is busy");

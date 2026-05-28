@@ -1,9 +1,15 @@
 /**
- * One-round integration tests for stop-reply behavior.
- * Run: node scripts/test-stop-reply.mjs [baseUrl]
+ * Integration tests for stop-reply behavior (Node fetch, no browser).
+ * Run: node e2e/test-stop-reply.mjs [webBaseUrl] [chatApiBaseUrl]
+ *
+ * Defaults: web http://localhost:3000, chat API http://localhost:4000
  */
 
-const BASE = process.argv[2] ?? "http://localhost:3002";
+const WEB_BASE = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
+const CHAT_BASE = (process.argv[3] ?? process.env.OLLAMA_SERVICE_URL ?? "http://localhost:4000").replace(
+  /\/$/,
+  "",
+);
 
 const results = [];
 
@@ -18,7 +24,7 @@ function fail(name, detail = "") {
 }
 
 async function fetchChat(body, signal) {
-  const response = await fetch(`${BASE}/api/chat`, {
+  const response = await fetch(`${CHAT_BASE}/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     signal,
@@ -29,14 +35,13 @@ async function fetchChat(body, signal) {
 }
 
 async function testPageUi() {
-  const html = await fetch(BASE).then((r) => r.text());
+  const html = await fetch(WEB_BASE).then((r) => r.text());
   if (html.includes("Start conversation")) {
     pass('UI contains "Start conversation"');
   } else {
     fail('UI contains "Start conversation"');
   }
 
-  // Client component — labels ship in JS chunks, not always in first HTML paint.
   const chunkUrls = [...html.matchAll(/\/_next\/static\/chunks\/[^"']+page[^"']*\.js/g)].map(
     (m) => m[0],
   );
@@ -44,7 +49,7 @@ async function testPageUi() {
   let bundleText = html;
   for (const path of uniqueChunks.slice(0, 3)) {
     try {
-      bundleText += await fetch(`${BASE}${path}`).then((r) => r.text());
+      bundleText += await fetch(`${WEB_BASE}${path}`).then((r) => r.text());
     } catch {
       // ignore missing chunk
     }
@@ -68,6 +73,7 @@ async function testChatWorks() {
   const { response, data } = await fetchChat({
     messages: [{ role: "user", content: "Say hello in one short sentence." }],
     language: "en-US",
+    topicId: "cooking",
   });
   if (!response.ok) {
     fail("Chat API returns 200", `status ${response.status}`);
@@ -91,6 +97,7 @@ async function testAbortDuringThinking() {
           { role: "user", content: "Write a very long essay about customer support." },
         ],
         language: "en-US",
+        topicId: "cooking",
       },
       controller.signal,
     );
@@ -106,11 +113,11 @@ async function testAbortDuringThinking() {
 }
 
 async function testFollowUpAfterAbort() {
-  // Simulates: user aborted first question, then asks another in same conversation.
   const history = [{ role: "user", content: "What is 2 plus 2?" }];
   const { response, data } = await fetchChat({
     messages: history,
     language: "en-US",
+    topicId: "cooking",
   });
   if (!response.ok || !data.reply) {
     fail("Follow-up chat after abort simulation");
@@ -124,6 +131,7 @@ async function testFollowUpAfterAbort() {
       { role: "user", content: "What is 3 plus 3?" },
     ],
     language: "en-US",
+    topicId: "cooking",
   });
 
   if (followUp.response.ok && followUp.data.reply) {
@@ -138,9 +146,10 @@ async function testFollowUpAfterAbort() {
 
 async function testBuildArtifacts() {
   const { execSync } = await import("node:child_process");
+  const repoRoot = new URL("..", import.meta.url).pathname;
   try {
     execSync("npm run build", {
-      cwd: new URL("..", import.meta.url).pathname,
+      cwd: repoRoot,
       stdio: "pipe",
     });
     pass("Production build");
@@ -149,7 +158,9 @@ async function testBuildArtifacts() {
   }
 }
 
-console.log(`\nTesting stop-reply flow at ${BASE}\n`);
+console.log(`\nTesting stop-reply flow`);
+console.log(`  Web:  ${WEB_BASE}`);
+console.log(`  Chat: ${CHAT_BASE}/chat\n`);
 
 try {
   await testPageUi();

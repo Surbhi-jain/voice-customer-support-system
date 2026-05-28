@@ -13,10 +13,15 @@
     "dev:ollama": "npm run dev -w @voice-support/ollama",
     "ollama:serve": "npm run daemon:serve -w @voice-support/ollama",
     "ollama:pull": "npm run daemon:pull -w @voice-support/ollama",
-    "dev:speech": "cd services/speech && uvicorn main:app --host 127.0.0.1 --port 8000",
+    "dev:speech": "cd services/speech && . .venv/bin/activate && uvicorn main:app --host 127.0.0.1 --port 8000",
+    "start:all:mac": "bash scripts/start-all-macos-terminal.sh",
+    "start:all:win:cmd": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-all-windows-cmd.ps1",
+    "start:all:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-all-windows-terminal.ps1",
     "build": "npm run build -w @voice-support/web",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "test:stop-reply": "node e2e/test-stop-reply.mjs",
+    "test:stop-reply:browser": "node e2e/test-stop-reply-browser.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.1",
