@@ -12,8 +12,8 @@ export function TranscriptPanel({
   onChange,
 }: TranscriptPanelProps) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+    <section className="rounded-xl border border-white/10 bg-white/5 p-4">
+      <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
         You said
       </h2>
       {editable ? (
@@ -21,12 +21,12 @@ export function TranscriptPanel({
           value={userText}
           onChange={(event) => onChange(event.target.value)}
           rows={4}
-          className="w-full resize-y rounded-lg border border-slate-300 px-3 py-2 text-sm leading-relaxed text-slate-800 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-          placeholder="Your words will appear here after you stop recording. Edit if needed, then send."
-          aria-label="Transcript — edit if speech recognition was wrong"
+          className="w-full resize-y rounded-lg border border-white/15 bg-slate-950/60 px-3 py-2 text-sm leading-relaxed text-white placeholder:text-slate-500 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+          placeholder="Your words will appear here. Edit if needed, then send."
+          aria-label="Your message"
         />
       ) : (
-        <p className="min-h-[4rem] whitespace-pre-wrap text-sm leading-relaxed text-slate-800">
+        <p className="min-h-[4rem] whitespace-pre-wrap text-sm leading-relaxed text-slate-200">
           {userText ||
             (transcriptReady
               ? ""
@@ -34,8 +34,8 @@ export function TranscriptPanel({
         </p>
       )}
       {editable && transcriptReady ? (
-        <p className="mt-2 text-xs text-slate-500">
-          Fix any wrong words before sending — speech recognition is not always perfect.
+        <p className="mt-2 text-center text-xs text-slate-400 sm:text-left">
+          Review your message before sending.
         </p>
       ) : null}
     </section>

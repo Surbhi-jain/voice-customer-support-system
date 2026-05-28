@@ -33,16 +33,16 @@ export function StatusBar({ status, isActive, topicLabel }: StatusBarProps) {
     : "Session stopped";
 
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+    <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3">
       <span
         className={`h-3 w-3 shrink-0 rounded-full ${STATUS_COLORS[displayStatus]}`}
         aria-hidden
       />
       <div>
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+        <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
           Status
         </p>
-        <p className="text-sm font-semibold text-slate-900">{statusText}</p>
+        <p className="text-sm font-semibold text-white">{statusText}</p>
       </div>
     </div>
   );

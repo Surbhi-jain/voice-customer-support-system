@@ -16,7 +16,12 @@ test.beforeEach(async ({ page }) => {
 test("home page shows start conversation before session", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: "Voice Support (Phase 4)" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: /24\/7 growth opportunity/i,
+    }),
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Try it yourself" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Start conversation" })).toBeVisible();
   await expect(page.getByRole("button", { name: "End session" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Stop reply" })).toHaveCount(0);
@@ -24,12 +29,12 @@ test("home page shows start conversation before session", async ({ page }) => {
 
 test("settings include support topic, language, and spoken reply voice", async ({ page }) => {
   await page.goto("/");
-  await page.getByText("Settings").click();
+  await page.locator("summary").filter({ hasText: /^Preferences$/ }).click();
 
   await expect(page.getByLabel("Your name")).toBeVisible();
   await expect(page.getByLabel("Support topic")).toBeVisible();
-  await expect(page.getByText("Language (speech + replies)")).toBeVisible();
-  await expect(page.getByLabel("Spoken reply voice (Piper)")).toBeVisible();
+  await expect(page.getByLabel("Language")).toBeVisible();
+  await expect(page.getByLabel("Assistant voice")).toBeVisible();
 });
 
 test("greeting includes customer name and topic", () => {
@@ -45,7 +50,7 @@ test("greeting includes customer name and topic", () => {
 
 test("start conversation speaks greeting then becomes idle", async ({ page }) => {
   await page.goto("/");
-  await page.getByText("Settings").click();
+  await page.locator("summary").filter({ hasText: /^Preferences$/ }).click();
   await page.getByLabel("Your name").fill("Surbhi");
   await startCallAndWaitForIdle(page);
   await expect(page.getByRole("button", { name: "Start speaking" })).toBeEnabled();
@@ -68,7 +73,7 @@ test("cooking recipe question is on-topic even if history mentions hotel", () =>
 
 test("chat request includes selected topicId", async ({ page }) => {
   await page.goto("/");
-  await page.getByText("Settings").click();
+  await page.locator("summary").filter({ hasText: /^Preferences$/ }).click();
   await page.getByLabel("Support topic").selectOption("cooking");
   const chatRequestPromise = page.waitForRequest("**/chat");
 
@@ -95,7 +100,7 @@ test("speak controls: start speaking then stop and auto-send", async ({ page }) 
   await expect(startSpeaking).toBeEnabled();
   await expect(stopSpeaking).toBeDisabled();
   await expect(
-    page.getByText("Click Start speaking, then Stop when you finish your question."),
+    page.getByText("Tap Start speaking, then Stop when you finish your question."),
   ).toBeVisible();
 
   await startSpeaking.click();
@@ -103,7 +108,7 @@ test("speak controls: start speaking then stop and auto-send", async ({ page }) 
   await expect(startSpeaking).toBeDisabled();
   await expect(stopSpeaking).toBeEnabled();
   await expect(
-    page.getByText("Speak clearly, then click Stop. Check the text, edit if needed, then Send question."),
+    page.getByText("Speak clearly, then tap Stop. Review your words and send when ready."),
   ).toBeVisible();
 
   await stopSpeaking.click();

@@ -11,7 +11,7 @@ export interface SupportTopic {
 export const SUPPORT_TOPICS: SupportTopic[] = [
   {
     id: "hotel",
-    label: "Hotel management — customer support",
+    label: "Hotel Support",
     scopeSummary:
       "any hotel and guest support question in any wording: stays, bookings, check-in, check-out, rooms, amenities, housekeeping, billing, policies, spa, parking, and special requests",
     keywords: [
@@ -75,7 +75,7 @@ export const SUPPORT_TOPICS: SupportTopic[] = [
   },
   {
     id: "cooking",
-    label: "Cooking support",
+    label: "Cooking",
     scopeSummary:
       "any cooking question: recipes for any dish, spices and masalas, ingredients and substitutions, techniques, timing, and food safety — in any phrasing the user uses",
     keywords: [
@@ -156,7 +156,7 @@ export const SUPPORT_TOPICS: SupportTopic[] = [
   },
   {
     id: "retail",
-    label: "Retail / e-commerce support",
+    label: "Retail Support",
     scopeSummary:
       "any online shopping and retail question in any wording: orders, tracking, shipping, delivery, returns, refunds, products, sizes, promos, warranty, payment issues, and order problems",
     keywords: [
@@ -215,7 +215,7 @@ export const SUPPORT_TOPICS: SupportTopic[] = [
   },
   {
     id: "travel",
-    label: "Travel & airline support",
+    label: "Travel Support",
     scopeSummary:
       "any travel and airline question in any wording: flights, bookings, changes, delays, baggage, seats, airports, visas, lounges, connections, and trip issues",
     keywords: [
@@ -270,7 +270,7 @@ export const SUPPORT_TOPICS: SupportTopic[] = [
   },
   {
     id: "banking",
-    label: "Banking support (demo)",
+    label: "Banking Support",
     scopeSummary:
       "any banking question in any wording: accounts, cards, loans, rates, repo rate, transfers, UPI, NEFT, RTGS, KYC, fees, fraud, statements, fixed deposits, branches, ATMs, PIN, and general money-banking topics — demo guidance only, not real financial advice",
     keywords: [
@@ -340,7 +340,7 @@ export const SUPPORT_TOPICS: SupportTopic[] = [
   },
   {
     id: "it_helpdesk",
-    label: "IT helpdesk support",
+    label: "IT Helpdesk",
     scopeSummary:
       "any workplace IT help question in any wording: passwords, login, email, VPN, Wi-Fi, software, installs, printers, laptops, phones, MFA, errors, and access",
     keywords: [
