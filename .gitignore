@@ -1,0 +1,56 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Next.js
+**/.next/
+/out/
+
+# production
+/build
+dist/
+
+# misc
+.DS_Store
+*.pem
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env files (keep .env.example)
+.env
+.env*.local
+!.env.example
+
+# Python speech service
+services/speech/.venv/
+services/speech/**/__pycache__/
+services/speech/models/
+**/__pycache__/
+*.pyc
+.venv/
+
+# typescript
+*.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+Thumbs.db

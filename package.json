@@ -1,0 +1,25 @@
+{
+  "name": "voice-customer-support-system",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "services/web",
+    "services/ollama",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,ollama-api -c green,yellow \"npm run dev -w @voice-support/web\" \"npm run dev -w @voice-support/ollama\"",
+    "dev:web": "npm run dev -w @voice-support/web",
+    "dev:ollama": "npm run dev -w @voice-support/ollama",
+    "ollama:serve": "npm run daemon:serve -w @voice-support/ollama",
+    "ollama:pull": "npm run daemon:pull -w @voice-support/ollama",
+    "dev:speech": "cd services/speech && uvicorn main:app --host 127.0.0.1 --port 8000",
+    "build": "npm run build -w @voice-support/web",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "concurrently": "^9.1.2"
+  }
+}

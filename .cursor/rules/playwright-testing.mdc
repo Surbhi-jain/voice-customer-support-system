@@ -1,0 +1,21 @@
+---
+description: Run Playwright E2E tests after every code change in this project
+alwaysApply: true
+---
+
+# Playwright testing (required)
+
+After **every code change** to this app, run Playwright tests before telling the user work is complete:
+
+```bash
+cd voice_customer_support_system
+npm run test:e2e
+```
+
+Tests run on port **3099** by default (see `playwright.config.ts`). Override with `PLAYWRIGHT_PORT=3002 npm run test:e2e` to reuse another dev server.
+
+The web app lives in `services/web/`. Playwright starts it via `npm run dev -w @voice-support/web`.
+
+## Adding coverage for new features
+
+When adding or changing UI behavior, add or update specs in `e2e/` so the new flow is covered.
